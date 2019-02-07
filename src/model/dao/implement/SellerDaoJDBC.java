@@ -102,7 +102,28 @@ PreparedStatement prepraredStat = null;
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		
+		PreparedStatement prepraredStat = null;
+		
+		try {
+			prepraredStat = connection.prepareStatement(
+					"DELETE " 
+					+ "FROM seller "  
+					+ "WHERE Id = ?");
+			
+			
+			prepraredStat.setInt(1, id);
+			prepraredStat.executeUpdate();
+			
+	     }
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+			
+        }	
+		finally {
+			DBASE.closeStatement(prepraredStat);
+						
+		}	
 		
 	}
 
