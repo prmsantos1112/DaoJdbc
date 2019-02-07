@@ -46,7 +46,15 @@ public class ProgramDaoJdbc {
 		System.out.println("===== Test 4: Seller Insert =====");
 		Seller newSeller = new Seller(null, "Jack Nickolson", "jacknic@gmail.com", new Date(), 3660.0, department);
 		sellerDao.insert(newSeller);
-		     System.out.println("Inserted ! New Id = " + newSeller.getId());
+		System.out.println("Inserted ! New Id = " + newSeller.getId());
+
+		System.out.println();
+		System.out.println("===== Test 5: Seller Update =====");
+		seller = sellerDao.findById(1);
+		seller.setName("Catharine Zetta");
+		sellerDao.update(seller);
+		System.out.println("Update Completed !!");
+		
 		
 
 	}
