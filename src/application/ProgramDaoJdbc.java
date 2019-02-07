@@ -32,5 +32,13 @@ public class ProgramDaoJdbc {
 		for (Seller objectiv : list) {
 			System.out.println(objectiv);
 		}
+		
+		System.out.println();
+		System.out.println("===== Test 3: Seller findAll =====");
+		list = sellerDao.findAll();
+		
+		for (Seller objectiv : list) {
+			System.out.println(objectiv);
+		}
 	}
 }
