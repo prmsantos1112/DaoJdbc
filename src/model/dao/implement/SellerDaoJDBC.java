@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.mysql.jdbc.Statement;
+
 import dbase.DBASE;
 import dbase.DbException;
 import model.dao.SellerDao;
@@ -25,7 +27,45 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void insert(Seller objectiv) {
-		// TODO Auto-generated method stub
+		
+		PreparedStatement prepraredStat = null;
+		
+		try {
+			prepraredStat = connection.prepareStatement(
+					"INSERT INTO seller "
+					+ "(Name, Email, BirthDate, BaseSalary, DepartmentId) "  
+					+ "VALUES "  
+					+ "(?, ?, ?, ?, ?)", 
+					Statement.RETURN_GENERATED_KEYS);
+			
+			prepraredStat.setString(1, objectiv.getName());
+			prepraredStat.setString(2, objectiv.getEmail());
+			prepraredStat.setDate(3, new java.sql.Date(objectiv.getBirthDate().getTime()));
+			prepraredStat.setDouble(4, objectiv.getBaseSalary());
+			prepraredStat.setInt(5, objectiv.getDepartment().getId());
+			
+			int rowsAffected = prepraredStat.executeUpdate();
+			
+			if (rowsAffected > 0 ) {
+				ResultSet resultSet = prepraredStat.getGeneratedKeys();
+				if (resultSet.next()) {
+					int id = resultSet.getInt(1);
+					objectiv.setId(id);
+				}
+				DBASE.closeResultSet(resultSet);
+			}
+			else {
+				throw new DbException("Unexpected Error !! No rows Affected !!");
+				
+			}			 
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+			
+		}	
+		finally {
+			DBASE.closeStatement(prepraredStat);
+		}
 		
 	}
 
